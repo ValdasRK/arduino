@@ -115,6 +115,7 @@ public:
     void sendString(const char* string);
     void sendString(byte command, const char* string);
 	void sendSysex(byte command, byte bytec, byte* bytev);
+    size_t write(uint8_t);
 /* attach & detach callback functions to messages */
     void attach(byte command, callbackFunction newFunction);
     void attach(byte command, systemResetCallbackFunction newFunction);
@@ -123,7 +124,7 @@ public:
     void detach(byte command);
 
 private:
-    Stream &FirmataSerial;
+    Stream &FirmataSerial;    
 /* firmware name and version */
     byte firmwareVersionCount;
     byte *firmwareVersionVector;
