@@ -1,4 +1,6 @@
 #include "OneWireFirmata.h"
+#include "Encoder7Bit.h"
+#include "FirmataScheduler.h"
 
 void OneWireFirmataClass::oneWireConfig(byte pin, boolean power) {
   ow_device_info *info = &pinOneWire[pin];
@@ -20,10 +22,10 @@ void OneWireFirmataClass::handleOneWireRequest(byte subcommand, byte argc, byte 
     case ONEWIRE_SEARCH_REQUEST: 
       {
         device->reset_search();
-        FirmataWrite(START_SYSEX);
-        FirmataWrite(ONEWIRE_REPLY);
-        FirmataWrite((byte)ONEWIRE_SEARCH_REPLY);
-        FirmataWrite(pin);
+        Firmata.write(START_SYSEX);
+        Firmata.write(ONEWIRE_REPLY);
+        Firmata.write((byte)ONEWIRE_SEARCH_REPLY);
+        Firmata.write(pin);
         Encoder7Bit.startBinaryWrite();
         byte addrArray[8];
         while (device->search(addrArray)) {
@@ -32,7 +34,7 @@ void OneWireFirmataClass::handleOneWireRequest(byte subcommand, byte argc, byte 
           }
         }
         Encoder7Bit.endBinaryWrite();
-        FirmataWrite(END_SYSEX);
+        Firmata.write(END_SYSEX);
         break;
       }
     case ONEWIRE_CONFIG_REQUEST:
@@ -93,10 +95,10 @@ void OneWireFirmataClass::handleOneWireRequest(byte subcommand, byte argc, byte 
           }
 
           if (numReadBytes>0) {
-            FirmataWrite(START_SYSEX);
-            FirmataWrite(ONEWIRE_REPLY);
-            FirmataWrite(ONEWIRE_READ_REPLY);
-            FirmataWrite(pin);
+            Firmata.write(START_SYSEX);
+            Firmata.write(ONEWIRE_REPLY);
+            Firmata.write(ONEWIRE_READ_REPLY);
+            Firmata.write(pin);
             Encoder7Bit.startBinaryWrite();
             for (int i=0;i<8;i++) {
               Encoder7Bit.writeBinary(info->addr[i]);
@@ -105,7 +107,7 @@ void OneWireFirmataClass::handleOneWireRequest(byte subcommand, byte argc, byte 
               Encoder7Bit.writeBinary(device->read());
             }
             Encoder7Bit.endBinaryWrite();
-            FirmataWrite(END_SYSEX);
+            Firmata.write(END_SYSEX);
           }
         }
       }

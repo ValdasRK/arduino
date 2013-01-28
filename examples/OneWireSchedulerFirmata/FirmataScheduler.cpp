@@ -1,4 +1,3 @@
-#include "Arduino.h"
 #include "Encoder7Bit.h"
 #include "FirmataScheduler.h"
 //#include <new.h>
@@ -141,15 +140,15 @@ void FirmataSchedulerClass::delayTask(long delay_ms) {
 }
 
 void FirmataSchedulerClass::queryAllTasks() {
-  FirmataWrite(START_SYSEX);
-  FirmataWrite(SCHEDULER_REPLY);
-  FirmataWrite(QUERY_ALL_TASKS_REPLY);
+  Firmata.write(START_SYSEX);
+  Firmata.write(SCHEDULER_REPLY);
+  Firmata.write(QUERY_ALL_TASKS_REPLY);
   firmata_task *task = tasks;
   while(task) {
-    FirmataWrite(task->id);
+    Firmata.write(task->id);
     task=task->nextTask;
   }
-  FirmataWrite(END_SYSEX);
+  Firmata.write(END_SYSEX);
 };
 
 void FirmataSchedulerClass::queryTask(byte id) {
@@ -158,20 +157,20 @@ void FirmataSchedulerClass::queryTask(byte id) {
 }
 
 void FirmataSchedulerClass::reportTask(byte id, firmata_task *task, boolean error) {
-  FirmataWrite(START_SYSEX);
-  FirmataWrite(SCHEDULER_REPLY);
+  Firmata.write(START_SYSEX);
+  Firmata.write(SCHEDULER_REPLY);
   if (error) {
-    FirmataWrite(ERROR_TASK_REPLY);
+    Firmata.write(ERROR_TASK_REPLY);
   } else {
-    FirmataWrite(QUERY_TASK_REPLY);
+    Firmata.write(QUERY_TASK_REPLY);
   }
-  FirmataWrite(id);
+  Firmata.write(id);
   if (task) {
     Encoder7Bit.startBinaryWrite();
     Encoder7Bit.writeBinary(firmata_task_len(task)-3,((byte *)task)+3); //don't write first 3 bytes (firmata_task*, byte); makes use of AVR byteorder (LSB first)
     Encoder7Bit.endBinaryWrite();
   }
-  FirmataWrite(END_SYSEX);
+  Firmata.write(END_SYSEX);
 };
 
 void FirmataSchedulerClass::runTasks() {

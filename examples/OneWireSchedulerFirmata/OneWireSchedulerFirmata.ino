@@ -34,7 +34,6 @@
 #include <Wire.h>
 #include "Firmata.h"
 #include <OneWire.h> //this is included here because it would'nt load from OneWireFirmata.h
-#include "FirmataExt.h"
 #include "FirmataScheduler.h"
 #include "OneWireFirmata.h"
 

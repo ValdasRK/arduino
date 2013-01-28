@@ -2,12 +2,7 @@
 #define OneWireFirmata_h
 
 #include <OneWire.h>
-#include "Arduino.h"
-#include "Boards.h"
 #include "Firmata.h"
-#include "FirmataExt.h"
-#include "Encoder7Bit.h"
-#include "FirmataScheduler.h"
 
 //subcommands:
 #define ONEWIRE_SEARCH_REQUEST 0x40
