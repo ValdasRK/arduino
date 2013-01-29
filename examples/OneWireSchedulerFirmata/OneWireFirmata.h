@@ -1,7 +1,7 @@
 #ifndef OneWireFirmata_h
 #define OneWireFirmata_h
 
-#include <OneWire.h>
+#include "OneWire.h"
 #include "Firmata.h"
 
 //subcommands:
@@ -9,6 +9,8 @@
 #define ONEWIRE_CONFIG_REQUEST 0x41
 #define ONEWIRE_SEARCH_REPLY 0x42
 #define ONEWIRE_READ_REPLY 0x43
+#define ONEWIRE_SEARCH_ALARMS_REQUEST 0x44
+#define ONEWIRE_SEARCH_ALARMS_REPLY 0x45
 
 #define ONEWIRE_RESET_REQUEST_BIT 0x01
 #define ONEWIRE_SKIP_REQUEST_BIT 0x02
@@ -18,6 +20,8 @@
 #define ONEWIRE_WRITE_REQUEST_BIT 0x20
 
 #define ONEWIRE_WITHDATA_REQUEST_BITS 0x3C
+
+#define ONEWIRE_CRC 0 //for OneWire.h: crc-functions are not used by Firmata
 
 //default value for power:
 #define ONEWIRE_POWER 1
