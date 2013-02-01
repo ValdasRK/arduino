@@ -103,7 +103,11 @@ void readAndReportData(byte address, int theRegister, byte numBytes) {
     Wire.send((byte)theRegister);
     #endif
     Wire.endTransmission();
-    delayMicroseconds(i2cReadDelayTime);  // delay is necessary for some devices such as WiiNunchuck
+    // do not set a value of 0
+    if (i2cReadDelayTime > 0) {
+      // delay is necessary for some devices such as WiiNunchuck
+      delayMicroseconds(i2cReadDelayTime);
+    }
   } else {
     theRegister = 0;  // fill the register with a dummy value
   }
@@ -466,6 +470,17 @@ void sysexCallback(byte command, byte argc, byte *argv)
       //Firmata.sendString("Not enough data");
     }
     break;
+  case CONFIG_EXT:
+	  if (argc > 1) {
+		  switch (argv[0]) {
+		  case 0: // analogReference request
+			  analogReference(argv[1]);
+			  break;
+		  case 1: // analogWriteResolution request
+			  analogWriteResolution(arg[1]);
+			  break;
+		  }
+	  }
   case EXTENDED_ANALOG:
     if (argc > 1) {
       int val = argv[1];
@@ -665,11 +680,3 @@ runtasks: FirmataScheduler.runTasks();
     }
   }
 }
-
-
-
-
-
-
-
-
