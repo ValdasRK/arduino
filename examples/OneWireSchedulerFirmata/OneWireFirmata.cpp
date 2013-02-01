@@ -24,7 +24,7 @@ void OneWireFirmataClass::handleOneWireRequest(byte subcommand, byte argc, byte 
       {
         device->reset_search();
         Firmata.write(START_SYSEX);
-        Firmata.write(ONEWIRE_REPLY);
+        Firmata.write(ONEWIRE_DATA);
         boolean isAlarmSearch = (subcommand == ONEWIRE_SEARCH_ALARMS_REQUEST);
         Firmata.write(isAlarmSearch ? (byte)ONEWIRE_SEARCH_ALARMS_REPLY : (byte)ONEWIRE_SEARCH_REPLY);
         Firmata.write(pin);
@@ -98,7 +98,7 @@ void OneWireFirmataClass::handleOneWireRequest(byte subcommand, byte argc, byte 
 
           if (numReadBytes>0) {
             Firmata.write(START_SYSEX);
-            Firmata.write(ONEWIRE_REPLY);
+            Firmata.write(ONEWIRE_DATA);
             Firmata.write(ONEWIRE_READ_REPLY);
             Firmata.write(pin);
             Encoder7Bit.startBinaryWrite();

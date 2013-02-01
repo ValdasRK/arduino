@@ -141,7 +141,7 @@ void FirmataSchedulerClass::delayTask(long delay_ms) {
 
 void FirmataSchedulerClass::queryAllTasks() {
   Firmata.write(START_SYSEX);
-  Firmata.write(SCHEDULER_REPLY);
+  Firmata.write(SCHEDULER_DATA);
   Firmata.write(QUERY_ALL_TASKS_REPLY);
   firmata_task *task = tasks;
   while(task) {
@@ -158,7 +158,7 @@ void FirmataSchedulerClass::queryTask(byte id) {
 
 void FirmataSchedulerClass::reportTask(byte id, firmata_task *task, boolean error) {
   Firmata.write(START_SYSEX);
-  Firmata.write(SCHEDULER_REPLY);
+  Firmata.write(SCHEDULER_DATA);
   if (error) {
     Firmata.write(ERROR_TASK_REPLY);
   } else {
